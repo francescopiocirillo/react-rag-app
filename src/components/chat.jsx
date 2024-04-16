@@ -12,6 +12,8 @@ import { useRef } from 'react';
 import { scrollToBottom } from '@/lib/utils';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import styles from './chat.module.css'
+import Image from './media';
 
 export default function Chat() {
 
@@ -41,10 +43,17 @@ export default function Chat() {
           message={singleMessage}
         />))}
       </Stack>
-      <form>
-          <Stack spacing={2} direction="row" style={{borderColor: "gray", border: "solid"}}>
-              <TextField id="outlined-basic" label="Chiedi all'AI" variant="outlined" style={{backgroundColor: "gray"}} value={inputMessage} onChange={(e) => setInputMessage(e.target.value)}/>
-              <Button variant="contained" onClick={sendMessage}>SEND</Button>
+      <form className={styles.input}>
+          <Stack spacing={2} direction="row" className={styles.inputLine}>
+              <TextField id="outlined-basic" label="Chiedi all'AI" variant="outlined" className={styles.textField} value={inputMessage} onChange={(e) => setInputMessage(e.target.value)}/>
+              <Button variant="contained" onClick={sendMessage} className={styles.button}>
+                <Image
+                  src={sendButton.png}
+                  alt="invia"
+                  width={50}
+                  height={50}
+                />  */}send
+              </Button>
           </Stack>
       </form>
     </Stack>
