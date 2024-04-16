@@ -19,6 +19,11 @@ import styles from './chat.module.css'
 import Image from 'next/image';
 import robot from './media/sendButton.png';
 import robot_medico from './media/robot_medico.png';
+/*import Scrollbar from "react-scrollbars-custom"*/
+import Paper  from '@mui/material/Paper';
+import List from '@mui/material/List';
+
+
 
 
 
@@ -42,10 +47,9 @@ export default function Chat() {
 
   let i = 0;
   return (
-    
-    <Stack className={styles.total}>
-      <Stack className={styles.gruppoMess}>
-        <Card className={styles.card_header}>
+   
+    <List className={styles.total}>
+      <Card className={styles.card_header}>
           <Box className={styles.box} >
             <CardContent className={styles.cardContent}>
               <Typography component="div" variant="h5" className={styles.typography}>
@@ -61,14 +65,20 @@ export default function Chat() {
             />
           
         </Card>
+        <Paper className={styles.paper}>
+      <List className={styles.gruppoMess}>
+        
 
         {history.map((singleMessage) => (
+          
           <ChatLine 
             /* ci vorrebbe il prop key che identifica univocamente gli elementi della lista */
             key={i++}
             message={singleMessage}
-          />))}
-      </Stack>
+          />
+      ))}
+      </List>
+      </Paper>
       <form className={styles.input}>
         <Stack spacing={2} direction="row" className={styles.inputLine}>
           <TextField id="outlined-basic" label="Chiedi all'AI" variant="outlined" className={styles.textField} value={inputMessage} onChange={(e) => setInputMessage(e.target.value)} />
@@ -82,6 +92,7 @@ export default function Chat() {
           </Button>
         </Stack>
       </form>
-    </Stack>
+    </List>
+    
   );
 }

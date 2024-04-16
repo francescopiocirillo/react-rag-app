@@ -1,6 +1,32 @@
-.total{
+.total {
     width: 1000px;
+    position: static;
 }
+
+.paper {
+    height: 450px;
+    overflow-y: scroll;
+}
+
+/*decori scrollbar*/
+/* width */
+.paper::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Handle */
+.paper::-webkit-scrollbar-thumb {
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(.5, #20c7ca71), color-stop(1, #00999991));
+    border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.paper::-webkit-scrollbar-thumb:hover {
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(.5, #20c7ca), color-stop(1, #009999));
+}
+
+
 
 .gruppoMess {
     background-color: whitesmoke;
@@ -16,7 +42,7 @@
     border-radius: 7px;
     background-color: whitesmoke;
     border: solid;
-    border-color:#00FFFF;
+    border-color: #00FFFF;
     width: 950px;
 }
 
@@ -40,8 +66,9 @@
 .typography {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bolder;
-   
+
 }
+
 /*sfondo header*/
 .card_header {
     display: flex;
@@ -50,11 +77,11 @@
     margin-bottom: 20px;
 }
 
-.box{
+.box {
     display: flex;
     flex-direction: column;
 }
 
-.cardContent{
+.cardContent {
     flex: 1 0 auto;
 }
