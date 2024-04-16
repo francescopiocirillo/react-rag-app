@@ -1,4 +1,3 @@
-'use client'
 import { CheerioWebBaseLoader } from "langchain/document_loaders/web/cheerio";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
@@ -20,13 +19,24 @@ const rl = require('readline').createInterface({
 });
 */
 /** creazione oggetto ChatOllama, caratterizzata dall'url per raggiungere l'LLM e dal modello che si vuole utilizzare */
+
+
+
+
+
 const chatModel = new ChatOllama({
-  baseUrl: "http://localhost:11434", // Default value
+  baseUrl: "http://localhost:11434", 
   model: "mistral",
 });
 
+
+
+
 /** caricamento documento di contesto */
 //il documento docs sarà troppo grande per darlo direttamente all'LLM
+
+
+
 const loader = new CheerioWebBaseLoader("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing");
 const docs = await loader.load();
 //in questo modo splitDocs è un array che contiene tante piccole parti di docs
@@ -95,7 +105,7 @@ let result = await conversationalRetrievalChain.invoke({
 console.log("Secondo risultato:" + result.answer);
 */
 console.log("hei");
-
+/*
 function mainLoop() {
     rl.question("Write: ", (userMessage) => {
         if(userMessage === "/stop") {
@@ -114,7 +124,9 @@ function mainLoop() {
         }
     });
 }
+*/
 
+/*
 export function callLLMPersonalized(inputMessage) {
   conversationalRetrievalChain.invoke({
       chat_history: chatHistory,
@@ -122,5 +134,19 @@ export function callLLMPersonalized(inputMessage) {
   }).then((response) => {
       chatHistory.push(new AIMessage(response.answer));
       return response.answer;
+  });
+}*/
+
+export function callLLMPersonalized(inputMessage) {
+  return new Promise((resolve, reject) => {
+    conversationalRetrievalChain.invoke({
+      chat_history: chatHistory,
+      input: inputMessage,
+    }).then((response) => {
+      chatHistory.push(new AIMessage(response.answer));
+      resolve(response.answer);
+    }).catch((error) => {
+      reject(error);
+    });
   });
 }
