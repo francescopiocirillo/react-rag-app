@@ -43,7 +43,7 @@ export default function Chat() {
   let i = 0;
   return (
     <Stack>
-      <Stack style={{ maxHeight: 450, overflow: "auto", backgroundColor: 'darkgrey' }}>
+      <Stack className={styles.gruppoMess}>
         <Card sx={{ display: 'flex' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flex: '1 0 auto' }}>
