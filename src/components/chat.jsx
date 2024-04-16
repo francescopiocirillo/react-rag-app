@@ -42,6 +42,7 @@ export default function Chat() {
 
   let i = 0;
   return (
+    
     <Stack className={styles.total}>
       <Stack className={styles.gruppoMess}>
         <Card className={styles.card_header}>
