@@ -1,0 +1,30 @@
+.input {
+    padding: 20px;
+    background-color:whitesmoke;
+}
+
+.inputLine {
+}
+
+.textField {
+    border-radius: 7px;
+    background-color:whitesmoke;
+    border: solid;
+    border-color:#00FFFF;
+}
+
+.button{
+    border-radius: 150px;
+    padding: 3px;
+    background-color: #009999;
+    border: solid;
+    border-color:#00FFFF;
+}
+
+.button:hover{
+    border-radius: 150px;
+    padding: 3px;
+    background-color: #02d1d1;
+    border: solid;
+    border-color:#00FFFF;
+}

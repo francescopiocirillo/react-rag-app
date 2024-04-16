@@ -14,7 +14,11 @@
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.15",
     "langchain": "^0.1.33",
+<<<<<<< HEAD
     "next": "^14.2.1",
+=======
+    "next": "14.2.1",
+>>>>>>> 1d4c67eadc9caad037fe1bd6039cc0df91e5bb4c
     "react": "^18",
     "react-dom": "^18"
   },
