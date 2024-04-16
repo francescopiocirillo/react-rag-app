@@ -1,7 +1,10 @@
+.total{
+    width: 1000px;
+}
+
 .gruppoMess {
     background-color: whitesmoke;
 }
-
 
 /*barra inferirore per scrivere la domanda e inviarla*/
 .input {
@@ -13,7 +16,8 @@
     border-radius: 7px;
     background-color: whitesmoke;
     border: solid;
-    border-color: #00FFFF;
+    border-color:#00FFFF;
+    width: 90px;
 }
 
 .button {

@@ -42,7 +42,7 @@ export default function Chat() {
 
   let i = 0;
   return (
-    <Stack>
+    <Stack className={styles.total}>
       <Stack className={styles.gruppoMess}>
         <Card className={styles.card_header}>
           <Box className={styles.box} >
@@ -62,7 +62,7 @@ export default function Chat() {
         </Card>
 
         {history.map((singleMessage) => (
-          <ChatLine
+          <ChatLine 
             /* ci vorrebbe il prop key che identifica univocamente gli elementi della lista */
             key={i++}
             message={singleMessage}
