@@ -1,9 +1,12 @@
+.gruppoMess {
+    background-color: whitesmoke;
+}
+
+
+/*barra inferirore per scrivere la domanda e inviarla*/
 .input {
     padding: 20px;
     background-color:whitesmoke;
-}
-
-.inputLine {
 }
 
 .textField {
