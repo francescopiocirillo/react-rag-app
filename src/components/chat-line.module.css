@@ -1,0 +1,11 @@
+.doc{
+    margin: 20px;
+    background-color:blue;
+    color: gray;
+}
+
+.ai{
+    margin: 20px;
+    background-color:rgb(255, 0, 0);
+    color: rgb(44, 220, 38);
+}
