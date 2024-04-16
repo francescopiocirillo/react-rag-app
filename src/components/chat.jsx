@@ -18,7 +18,7 @@ import Typography from '@mui/material/Typography';
 import styles from './chat.module.css'
 import Image from 'next/image';
 import robot from './media/sendButton.png';
-import robot_medico from './media/robot-medico.png';
+import robot_medico from './media/robot_medico.png';
 
 
 
@@ -44,20 +44,21 @@ export default function Chat() {
   return (
     <Stack>
       <Stack className={styles.gruppoMess}>
-        <Card sx={{ display: 'flex' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <CardContent sx={{ flex: '1 0 auto' }}>
-              <Typography component="div" variant="h5">
+        <Card className={styles.card_header}>
+          <Box className={styles.box} >
+            <CardContent className={styles.cardContent}>
+              <Typography component="div" variant="h5" className={styles.typography}>
                 Benvenuto!
               </Typography>
             </CardContent>
           </Box>
-          <Image
-            src={robot_medico}
-            alt="robot-medico"
-            width={100}
-            height={100}
-          />
+            <Image className={styles.header_immagine}
+              src={robot_medico}
+              alt="robot-medico"
+              width={70}
+              height={70}
+            />
+          
         </Card>
 
         {history.map((singleMessage) => (
