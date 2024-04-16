@@ -14,14 +14,16 @@
 }
 
 .button{
-    border-radius: 100px;
+    border-radius: 150px;
+    padding: 3px;
     background-color: #009999;
     border: solid;
     border-color:#00FFFF;
 }
 
 .button:hover{
-    border-radius: 100px;
+    border-radius: 150px;
+    padding: 3px;
     background-color: #02d1d1;
     border: solid;
     border-color:#00FFFF;

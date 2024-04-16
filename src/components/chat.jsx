@@ -13,7 +13,9 @@ import { scrollToBottom } from '@/lib/utils';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import styles from './chat.module.css'
-import Image from './media';
+import Image from 'next/image';
+import robot from './media/sendButton.png';
+
 
 export default function Chat() {
 
@@ -48,11 +50,11 @@ export default function Chat() {
               <TextField id="outlined-basic" label="Chiedi all'AI" variant="outlined" className={styles.textField} value={inputMessage} onChange={(e) => setInputMessage(e.target.value)}/>
               <Button variant="contained" onClick={sendMessage} className={styles.button}>
                 <Image
-                  src={sendButton.png}
+                  src={robot}
                   alt="invia"
-                  width={50}
-                  height={50}
-                />  */}send
+                  width={45}
+                  height={45}
+                /> 
               </Button>
           </Stack>
       </form>
