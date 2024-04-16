@@ -33,7 +33,7 @@ export default function Chat() {
   let i = 0;
   return (
     <Stack>
-      <Stack style={{maxHeight: 450, overflow: "auto"}}>
+      <Stack style={{maxHeight: 450, overflow: "auto", backgroundColor:'darkgrey'}}>
         {history.map((singleMessage) => (
         <ChatLine
           /* ci vorrebbe il prop key che identifica univocamente gli elementi della lista */
