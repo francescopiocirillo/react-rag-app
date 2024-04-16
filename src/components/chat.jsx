@@ -12,21 +12,27 @@ import { useRef } from 'react';
 import { scrollToBottom } from '@/lib/utils';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
 import styles from './chat.module.css'
 import Image from 'next/image';
 import robot from './media/sendButton.png';
+import robot_medico from './media/robot-medico.png';
+
+
 
 
 export default function Chat() {
 
   const [history, setHistory] = useState(chatHistory);
 
-/*  useEffect(() => {
-    // This effect will run whenever chatHistory changes
-    console.log("CIAOOO");
-    setHistory(chatHistory);
-  }, [history]);*/
-  
+  /*  useEffect(() => {
+      // This effect will run whenever chatHistory changes
+      console.log("CIAOOO");
+      setHistory(chatHistory);
+    }, [history]);*/
+
   const [inputMessage, setInputMessage] = useState("");
   const sendMessage = () => {
     chatHistory.push(new HumanMessage(inputMessage));
@@ -37,26 +43,42 @@ export default function Chat() {
   let i = 0;
   return (
     <Stack>
-      <Stack style={{maxHeight: 450, overflow: "auto", backgroundColor:'darkgrey'}}>
+      <Stack style={{ maxHeight: 450, overflow: "auto", backgroundColor: 'darkgrey' }}>
+        <Card sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <CardContent sx={{ flex: '1 0 auto' }}>
+              <Typography component="div" variant="h5">
+                Benvenuto!
+              </Typography>
+            </CardContent>
+          </Box>
+          <Image
+            src={robot_medico}
+            alt="robot-medico"
+            width={100}
+            height={100}
+          />
+        </Card>
+
         {history.map((singleMessage) => (
-        <ChatLine
-          /* ci vorrebbe il prop key che identifica univocamente gli elementi della lista */
-          key={i++}
-          message={singleMessage}
-        />))}
+          <ChatLine
+            /* ci vorrebbe il prop key che identifica univocamente gli elementi della lista */
+            key={i++}
+            message={singleMessage}
+          />))}
       </Stack>
       <form className={styles.input}>
-          <Stack spacing={2} direction="row" className={styles.inputLine}>
-              <TextField id="outlined-basic" label="Chiedi all'AI" variant="outlined" className={styles.textField} value={inputMessage} onChange={(e) => setInputMessage(e.target.value)}/>
-              <Button variant="contained" onClick={sendMessage} className={styles.button}>
-                <Image
-                  src={robot}
-                  alt="invia"
-                  width={45}
-                  height={45}
-                /> 
-              </Button>
-          </Stack>
+        <Stack spacing={2} direction="row" className={styles.inputLine}>
+          <TextField id="outlined-basic" label="Chiedi all'AI" variant="outlined" className={styles.textField} value={inputMessage} onChange={(e) => setInputMessage(e.target.value)} />
+          <Button variant="contained" onClick={sendMessage} className={styles.button}>
+            <Image
+              src={robot}
+              alt="invia"
+              width={45}
+              height={45}
+            />
+          </Button>
+        </Stack>
       </form>
     </Stack>
   );
