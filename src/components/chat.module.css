@@ -31,7 +31,8 @@
 
 
 .gruppoMess {
-    background-color: whitesmoke;
+    background-color: white;
+    box-shadow: none;
 }
 
 /*barra inferirore per scrivere la domanda e inviarla*/
