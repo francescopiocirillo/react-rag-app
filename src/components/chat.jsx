@@ -25,9 +25,6 @@ import List from '@mui/material/List';
 
 
 
-
-
-
 export default function Chat() {
 
   const [history, setHistory] = useState(chatHistory);
@@ -50,34 +47,33 @@ export default function Chat() {
    
     <List className={styles.total}>
       <Card className={styles.card_header}>
-          <Box className={styles.box} >
-            <CardContent className={styles.cardContent}>
-              <Typography component="div" variant="h5" className={styles.typography}>
-                Benvenuto!
-              </Typography>
-            </CardContent>
-          </Box>
-            <Image className={styles.header_immagine}
-              src={robot_medico}
-              alt="robot-medico"
-              width={70}
-              height={70}
-            />
-          
-        </Card>
-        <Paper className={styles.paper}>
-      <List className={styles.gruppoMess}>
-        
+        <Box className={styles.box} >
+          <CardContent className={styles.cardContent}>
+            <Typography component="div" variant="h5" className={styles.typography}>
+              Benvenuto!
+            </Typography>
+          </CardContent>
+        </Box>
+        <Image className={styles.header_immagine}
+          src={robot_medico}
+          alt="robot-medico"
+          width={70}
+          height={70}
+        />
+      </Card>
+      <Paper className={styles.paper}>
+        <List className={styles.gruppoMess}>
 
-        {history.map((singleMessage) => (
+          {history.map((singleMessage) => (
+            
+            <ChatLine 
+              /* ci vorrebbe il prop key che identifica univocamente gli elementi della lista */
+              key={i++}
+              message={singleMessage}
+            />
+          ))}
           
-          <ChatLine 
-            /* ci vorrebbe il prop key che identifica univocamente gli elementi della lista */
-            key={i++}
-            message={singleMessage}
-          />
-      ))}
-      </List>
+        </List>
       </Paper>
       <form className={styles.input}>
         <Stack spacing={2} direction="row" className={styles.inputLine}>
