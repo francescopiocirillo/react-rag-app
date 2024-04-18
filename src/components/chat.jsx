@@ -22,7 +22,9 @@ import robot_medico from './media/robot_medico.png';
 /*import Scrollbar from "react-scrollbars-custom"*/
 import Paper  from '@mui/material/Paper';
 import List from '@mui/material/List';
-
+import SnackbarContent from '@mui/material/SnackbarContent';
+import { teal, cyan } from '@mui/material/colors';
+import Grow from '@mui/material/Grow';
 
 
 export default function Chat() {
@@ -41,6 +43,19 @@ export default function Chat() {
     setHistory(chatHistory);
     setInputMessage("");
   }
+
+  const fadeAwayRef = useRef(null);
+  function fadeAway() {
+    console.log("pippo");
+    fadeAwayRef.current.style.display = "none";
+  }
+
+  const actionSnack = (
+    <Button size="small" onClick={fadeAway}>
+      okay
+    </Button>
+  );
+  
 
   let i = 0;
   return (
@@ -74,6 +89,16 @@ export default function Chat() {
           ))}
           
         </List>
+    
+        <Stack
+        ref = {fadeAwayRef}
+        mx={30}
+        p={5}
+        spacing={2} sx={{ maxWidth: 600 }} classMessage={styles.popUpIni} >
+            <SnackbarContent sx={{ bgcolor: teal[900] }}  message="Questo assistente è ideato per aiutare il medico a seguire 
+              i propri prazienti. Si prega di scrivere il proprio quesito nella barra sottostande
+              e premere il bottone a destra. Successivamente attendere che l'assistente risponda." action={actionSnack} />
+        </Stack>
       </Paper>
       <form className={styles.input}>
         <Stack spacing={2} direction="row" className={styles.inputLine}>

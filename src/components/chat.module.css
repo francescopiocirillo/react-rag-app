@@ -29,7 +29,6 @@
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(.5, #20c7ca), color-stop(1, #009999));
 }
 
-
 .gruppoMess {
     background-color: white;
     box-shadow: none;
@@ -69,7 +68,6 @@
 .typography {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bolder;
-
 }
 
 /*sfondo header*/
