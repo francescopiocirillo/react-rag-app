@@ -1,4 +1,4 @@
-.total {
+/*.total {
     border-radius: 0px; 
     box-shadow: 0px 0px 0px #dedede00;
     background-color: rgba(255, 255, 255, 0);
@@ -10,17 +10,26 @@
     box-shadow: 0px 0px 0px #dedede00;
     background-color: rgba(255, 255, 255, 0);
     transition: none;
-}
+}*/
 
 /*contenitore del messaggio*/
 .contDoctor { 
     display: flex;
     justify-content: end;
+    border-radius: 0px; 
+    box-shadow: 0px 0px 0px #dedede00;
+    background-color: rgba(255, 255, 255, 0);
+    transition: none;
 }
+
 
 .contAi { 
     display: flex;
     justify-content: flex-start;
+    border-radius: 0px; 
+    box-shadow: 0px 0px 0px #dedede00;
+    background-color: rgba(255, 255, 255, 0);
+    transition: none;
 }
 
 /*icone del messaggio*/

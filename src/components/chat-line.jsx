@@ -13,8 +13,8 @@ import TipsAndUpdatesTwoToneIcon from '@mui/icons-material/TipsAndUpdatesTwoTone
 
 export default function ChatLine({message}) {
   return (
-    <Card className={styles.total}>
-      <CardActionArea className={message instanceof HumanMessage ? styles.contDoctor : styles.contAi}>
+    <Card className={message instanceof HumanMessage ? styles.contDoctor : styles.contAi}>
+      
       {message instanceof HumanMessage ? "" : <Avatar className={styles.AvatarAI} sx={{ bgcolor: cyan.A700 }}><TipsAndUpdatesTwoToneIcon/></Avatar>}
       
         <CardContent className={message instanceof HumanMessage ? styles.doctor : styles.ai}>
@@ -25,7 +25,6 @@ export default function ChatLine({message}) {
         </CardContent>
         {message instanceof HumanMessage ? <Avatar className={styles.AvatarDoc} sx={{ bgcolor: cyan[100] }} ><MedicalInformationTwoToneIcon/></Avatar> : "" }
       
-      </CardActionArea>
     </Card>
   );
 }
