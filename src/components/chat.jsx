@@ -58,10 +58,34 @@ export default function Chat() {
   }
 
   const [inputMessage, setInputMessage] = useState("");
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    // This effect will run whenever history changes
+    //console.log("effetto");
+    scrollToBottom(containerRef);
+  }, [JSON.stringify(history)]); //or `${outcomes}`, just putting history doesn't work because the array remains the same
+  
   const sendMessage = () => {
-    chatHistory.push(new HumanMessage(inputMessage));
-    setHistory(chatHistory);
+    const newQuestionHistory = [...history];
+    const userInput = inputMessage;
+    newQuestionHistory.push(new HumanMessage(userInput));
+    setHistory(newQuestionHistory);
     setInputMessage("");
+    fetch("http://localhost:3000/api/answer", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Specify the content type as JSON
+      },
+      body: JSON.stringify({message: userInput}),
+    })
+      .then(response => response.json())
+      .then(json => {
+        console.log('parsed json', json);
+        const newAnswerHistory = [...newQuestionHistory];
+        newAnswerHistory.push(new AIMessage(json.message));
+        setHistory(newAnswerHistory);
+      });
   }
 
   let i = 0;
