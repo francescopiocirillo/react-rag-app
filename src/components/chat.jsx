@@ -32,33 +32,27 @@ import Switch from '@mui/material/Switch';
 export default function Chat() {
 
   const [history, setHistory] = useState(chatHistory);
-
-  /*  useEffect(() => {
-      // This effect will run whenever chatHistory changes
-      console.log("CIAOOO");
-      setHistory(chatHistory);
-    }, [history]);*/
-
+  const [inputMessage, setInputMessage] = useState("");
+  const containerRef = useRef(null);
   const fadeAwayRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+
   function fadeAway() {
     console.log("pippo");
     fadeAwayRef.current.style.display = "none";
-  }
-
-  const actionSnack = (
-    <Button size="small" onClick={fadeAway}>
-      okay
-    </Button>
-  );
+  }  
   
-  const [loading, setLoading] = useState(true);
   function handleClick() {
     setLoading(true);
     sendMessage();
   }
 
-  const [inputMessage, setInputMessage] = useState("");
-  const containerRef = useRef(null);
+  //Should this be eliminated?
+  const actionSnack = (
+    <Button size="small" onClick={fadeAway}>
+      okay
+    </Button>
+  );
 
   useEffect(() => {
     // This effect will run whenever history changes
@@ -107,7 +101,7 @@ export default function Chat() {
           height={70}
         />
       </Card>
-      <Paper className={styles.paper}>
+      <Paper ref={containerRef} className={styles.paper}>
         <List className={styles.gruppoMess}>
 
           {history.map((singleMessage) => (

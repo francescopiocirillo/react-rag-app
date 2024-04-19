@@ -15,7 +15,7 @@
 /*contenitore del messaggio*/
 .contDoctor { 
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     border-radius: 0px; 
     box-shadow: 0px 0px 0px #dedede00;
     background-color: rgba(255, 255, 255, 0);
