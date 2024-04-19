@@ -25,7 +25,6 @@ import List from '@mui/material/List';
 import TransitionAlerts from './pupUp';
 import InputFileUpload from './addFile';
 import LoadingButton from '@mui/lab/LoadingButton';
-
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
@@ -35,7 +34,7 @@ export default function Chat() {
   const [inputMessage, setInputMessage] = useState("");
   const containerRef = useRef(null);
   const fadeAwayRef = useRef(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   function fadeAway() {
     console.log("pippo");
@@ -61,6 +60,7 @@ export default function Chat() {
   }, [JSON.stringify(history)]); //or `${outcomes}`, just putting history doesn't work because the array remains the same
   
   const sendMessage = () => {
+    setLoading(true);
     const newQuestionHistory = [...history];
     const userInput = inputMessage;
     newQuestionHistory.push(new HumanMessage(userInput));
@@ -79,12 +79,12 @@ export default function Chat() {
         const newAnswerHistory = [...newQuestionHistory];
         newAnswerHistory.push(new AIMessage(json.message));
         setHistory(newAnswerHistory);
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   let i = 0;
   return (
-   
     <List className={styles.total}>
       <Card className={styles.card_header}>
         <Box className={styles.box} >
@@ -103,65 +103,37 @@ export default function Chat() {
       </Card>
       <Paper ref={containerRef} className={styles.paper}>
         <List className={styles.gruppoMess}>
-
           {history.map((singleMessage) => (
-            
             <ChatLine 
-              /* ci vorrebbe il prop key che identifica univocamente gli elementi della lista */
               key={i++}
               message={singleMessage}
             />
           ))}
-          
         </List>
         <TransitionAlerts/>
       </Paper>
       <form className={styles.input}>
         <Stack spacing={2} direction="row" className={styles.inputLine}>
-        <InputFileUpload/>
+          <InputFileUpload/>
           <TextField id="outlined-basic" label="Chiedi all'AI" variant="outlined" className={styles.textField} value={inputMessage} onChange={(e) => setInputMessage(e.target.value)} />
-          {/*<Button variant="contained" onClick={sendMessage} className={styles.button}>
-            <Image
-              src={robot}
-              alt="invia"
-              width={45}
-              height={45}
-            />
-          </Button>*/}
-          <div>
-      <FormControlLabel
-        sx={{
-          display: 'block',
-        }}
-        control={
-          <Switch
-            checked={loading}
-            onChange={() => setLoading(!loading)}
-            name="loading"
-            color="primary"
-          />
-        }
-      />
-      <Box>
-        <LoadingButton className={styles.button}
-          onClick={handleClick}
-          endIcon={<Image
-              src={robot}
-              alt="invia"
-              width={40}
-              height={40}
-            />}
-          loading={loading}
-          loadingPosition="end"
-          variant="contained"
-        >
-        send
-        </LoadingButton>
-      </Box>
-    </div>
+          <Box>
+            <LoadingButton className={styles.button}
+              onClick={handleClick}
+              endIcon={<Image
+                  src={robot}
+                  alt="invia"
+                  width={40}
+                  height={40}
+                />}
+              loading={loading}
+              loadingPosition="end"
+              variant="contained"
+            >
+            send
+            </LoadingButton>
+          </Box>
         </Stack>
       </form>
     </List>
-    
   );
 }
