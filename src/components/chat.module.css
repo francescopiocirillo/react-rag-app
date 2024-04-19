@@ -50,11 +50,13 @@
 
 .button {
     border-radius: 150px;
-    padding: 3px;
+    padding: 10px;
     background-color: #009999;
     border: solid;
+    border-width: 3px;
     border-color: #00FFFF;
 }
+
 
 .button:hover {
     background-color: #02d1d1;

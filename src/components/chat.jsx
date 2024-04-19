@@ -23,8 +23,11 @@ import robot_medico from './media/robot_medico.png';
 import Paper  from '@mui/material/Paper';
 import List from '@mui/material/List';
 import TransitionAlerts from './pupUp';
-import InputFileUpload from './addFile'
+import InputFileUpload from './addFile';
+import LoadingButton from '@mui/lab/LoadingButton';
 
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
 export default function Chat() {
 
@@ -35,13 +38,6 @@ export default function Chat() {
       console.log("CIAOOO");
       setHistory(chatHistory);
     }, [history]);*/
-
-  const [inputMessage, setInputMessage] = useState("");
-  const sendMessage = () => {
-    chatHistory.push(new HumanMessage(inputMessage));
-    setHistory(chatHistory);
-    setInputMessage("");
-  }
 
   const fadeAwayRef = useRef(null);
   function fadeAway() {
@@ -55,6 +51,18 @@ export default function Chat() {
     </Button>
   );
   
+  const [loading, setLoading] = useState(true);
+  function handleClick() {
+    setLoading(true);
+    sendMessage();
+  }
+
+  const [inputMessage, setInputMessage] = useState("");
+  const sendMessage = () => {
+    chatHistory.push(new HumanMessage(inputMessage));
+    setHistory(chatHistory);
+    setInputMessage("");
+  }
 
   let i = 0;
   return (
@@ -94,14 +102,45 @@ export default function Chat() {
         <Stack spacing={2} direction="row" className={styles.inputLine}>
         <InputFileUpload/>
           <TextField id="outlined-basic" label="Chiedi all'AI" variant="outlined" className={styles.textField} value={inputMessage} onChange={(e) => setInputMessage(e.target.value)} />
-          <Button variant="contained" onClick={sendMessage} className={styles.button}>
+          {/*<Button variant="contained" onClick={sendMessage} className={styles.button}>
             <Image
               src={robot}
               alt="invia"
               width={45}
               height={45}
             />
-          </Button>
+          </Button>*/}
+          <div>
+      <FormControlLabel
+        sx={{
+          display: 'block',
+        }}
+        control={
+          <Switch
+            checked={loading}
+            onChange={() => setLoading(!loading)}
+            name="loading"
+            color="primary"
+          />
+        }
+      />
+      <Box>
+        <LoadingButton className={styles.button}
+          onClick={handleClick}
+          endIcon={<Image
+              src={robot}
+              alt="invia"
+              width={40}
+              height={40}
+            />}
+          loading={loading}
+          loadingPosition="end"
+          variant="contained"
+        >
+        send
+        </LoadingButton>
+      </Box>
+    </div>
         </Stack>
       </form>
     </List>
