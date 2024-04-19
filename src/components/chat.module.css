@@ -57,11 +57,7 @@
 }
 
 .button:hover {
-    border-radius: 150px;
-    padding: 3px;
     background-color: #02d1d1;
-    border: solid;
-    border-color: #00FFFF;
 }
 
 /*Scritta di benvenuto nell'header*/
