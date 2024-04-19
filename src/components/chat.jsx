@@ -85,7 +85,7 @@ export default function Chat() {
 
   let i = 0;
   return (
-    <List className={styles.total}>
+    <List className={styles.total} >
       <Card className={styles.card_header}>
         <Box className={styles.box} >
           <CardContent className={styles.cardContent}>
