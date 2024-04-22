@@ -6,15 +6,13 @@ import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { teal, cyan } from '@mui/material/colors';
+import styles from './popUp.module.css'
 
 export default function TransitionAlerts() {
   const [open, setOpen] = React.useState(true);
 
   return (
-    <Box sx={{ maxWidth: 600 }}
-      my={7}
-      mx={30}
-      >
+    <Box className={styles.total} >
       <Collapse in={open}>
         <Alert severity="info"
           action={
