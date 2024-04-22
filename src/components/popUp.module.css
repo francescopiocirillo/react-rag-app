@@ -1,0 +1,10 @@
+@media(max-width: 800px) {
+    .total {
+        display: none;
+    }
+}
+
+.total { 
+    margin: 80px auto;
+    max-width: 600px;
+}
