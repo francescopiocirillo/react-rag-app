@@ -42,6 +42,12 @@ const docs = await loader.load();
 //in questo modo splitDocs è un array che contiene tante piccole parti di docs
 const splitter = new RecursiveCharacterTextSplitter();
 const splitDocs = await splitter.splitDocuments(docs);
+
+const loader1= new CheerioWebBaseLoader("https://docs.google.com/document/d/1HshNITZ2_n08rHoiWQnIpwijYFyQxuaL0PfmgFwU8Is/edit?usp=sharing");
+const docs1 = await loader1.load();
+//in questo modo splitDocs è un array che contiene tante piccole parti di docs
+const splitter1 = new RecursiveCharacterTextSplitter();
+const splitDocs1 = await splitter1.splitDocuments(docs1);
 //console.log(splitDocs[0].pageContent.length);
 /**
  * creazione embedding e vector store
@@ -51,10 +57,10 @@ const embeddings = new OllamaEmbeddings({
   model: "nomic-embed-text",
   maxConcurrency: 5,
 });
-const vectorstore = await MemoryVectorStore.fromDocuments(
-  splitDocs,
-  embeddings
-);
+const vectorstore = new MemoryVectorStore(embeddings);
+
+await vectorstore.addDocuments(splitDocs);
+
 const retriever = vectorstore.asRetriever();
 
 /**
@@ -96,6 +102,7 @@ const conversationalRetrievalChain = await createRetrievalChain({
   retriever: historyAwareRetrieverChain,
   combineDocsChain: historyAwareCombineDocsChain,
 });
+await vectorstore.addDocuments(splitDocs1);
 /*
 let result = await conversationalRetrievalChain.invoke({
   chat_history: chatHistory,
@@ -137,6 +144,11 @@ export function callLLMPersonalized(inputMessage) {
   });
 }*/
 
+/**
+ * 
+ * @param {String} inputMessage 
+ * @returns 
+ */
 export function callLLMPersonalized(inputMessage) {
   return new Promise((resolve, reject) => {
     conversationalRetrievalChain.invoke({
