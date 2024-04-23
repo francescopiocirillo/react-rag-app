@@ -27,6 +27,8 @@ import InputFileUpload from './addFile';
 import LoadingButton from '@mui/lab/LoadingButton';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import SpeedDialTooltipOpen from './moreAction';
+import AnchorTemporaryDrawer from './showFile';
 
 export default function Chat() {
 
@@ -37,7 +39,6 @@ export default function Chat() {
   const [loading, setLoading] = useState(false);
 
   function fadeAway() {
-    console.log("pippo");
     fadeAwayRef.current.style.display = "none";
   }  
   
@@ -90,7 +91,7 @@ export default function Chat() {
         <Box className={styles.box} >
           <CardContent className={styles.cardContent}>
             <Typography component="div" variant="h5" className={styles.typography}>
-              Benvenuto!
+              Benvenuto in MedChatbot!
             </Typography>
           </CardContent>
         </Box>
@@ -115,6 +116,7 @@ export default function Chat() {
       <form className={styles.input}>
         <Stack spacing={2} direction="row" className={styles.inputLine}>
           <InputFileUpload/>
+          <AnchorTemporaryDrawer/>
           <TextField id="outlined-basic" label="Chiedi all'AI" variant="outlined" className={styles.textField} value={inputMessage} onChange={(e) => setInputMessage(e.target.value)} />
           <Box>
             <LoadingButton className={styles.button}
@@ -132,6 +134,7 @@ export default function Chat() {
             send
             </LoadingButton>
           </Box>
+          {/*<SpeedDialTooltipOpen/>*/}
         </Stack>
       </form>
     </List>
