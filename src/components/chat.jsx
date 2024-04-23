@@ -27,7 +27,6 @@ import InputFileUpload from './addFile';
 import LoadingButton from '@mui/lab/LoadingButton';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import SpeedDialTooltipOpen from './moreAction';
 import AnchorTemporaryDrawer from './showFile';
 
 export default function Chat() {
@@ -134,7 +133,6 @@ export default function Chat() {
             send
             </LoadingButton>
           </Box>
-          {/*<SpeedDialTooltipOpen/>*/}
         </Stack>
       </form>
     </List>

@@ -13,14 +13,18 @@ import MailIcon from '@mui/icons-material/Mail';
 import styles from './showFile.module.css';
 import FilePresentTwoToneIcon from '@mui/icons-material/FilePresentTwoTone';
 import Tooltip from '@mui/material/Tooltip';
-
+import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
+import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
+import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
+import { cyan } from '@mui/material/colors';
 
 export default function AnchorTemporaryDrawer() {
   const [state, setState] = React.useState({
     right: false,
   });
 
-  const toggleDrawer = (anchor, open) => (event) => {
+  const   toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -30,30 +34,31 @@ export default function AnchorTemporaryDrawer() {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
+      <List className={styles.elenco}>
+        <h1> <PictureAsPdfOutlinedIcon/> File</h1>
+        {['lollo.pdf', 'ciccio.pdf', 'paperino.pdf'].map((text, index) => (
+          <ListItem key={text} disablePadding className={styles.itemElenco}>
             <ListItemButton>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <ArticleOutlinedIcon style={{ color:cyan[400] }}/>
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
+      <Divider /> {/* linea grigia per dividere i paragrafi */}
+      <List className={styles.elenco}>
+        <h1> <LinkOutlinedIcon/> Links</h1>
+        {['https://learnenglish.britishcouncil.org/test-your-english?destination=/online-english-level-test#/?_k=x7vynw', 'www.mui.com', 'http://www.google.com/drive/docs'].map((text, index) => (
+          <ListItem key={text} disablePadding className={styles.itemElenco}>
             <ListItemButton>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <LanguageOutlinedIcon style={{ color:cyan[400] }}/>
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>

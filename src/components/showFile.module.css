@@ -10,3 +10,18 @@
 .button:hover {
     background-color: #02d1d1;
 }
+
+.elenco {
+    max-width: min-content;
+}
+
+.itemElenco:not(.itemElenco > *):hover{  
+    /*per selezionare tutti gli elementi dell'
+    elenco ma non i loro figli (icone e testi)*/
+    background-color: #0099993b;
+}
+
+.elenco h1 {
+    color:#009999;
+    margin: 20px;
+}
