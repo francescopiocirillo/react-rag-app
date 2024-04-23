@@ -91,7 +91,7 @@ export default function Chat() {
         <Box className={styles.box} >
           <CardContent className={styles.cardContent}>
             <Typography component="div" variant="h5" className={styles.typography}>
-              Benvenuto!
+              Benvenuto in MedChatbot!
             </Typography>
           </CardContent>
         </Box>

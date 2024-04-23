@@ -16,6 +16,7 @@
 .contDoctor { 
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     border-radius: 0px; 
     box-shadow: 0px 0px 0px #dedede00;
     background-color: rgba(255, 255, 255, 0);
@@ -26,6 +27,7 @@
 .contAi { 
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     border-radius: 0px; 
     box-shadow: 0px 0px 0px #dedede00;
     background-color: rgba(255, 255, 255, 0);
