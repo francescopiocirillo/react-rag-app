@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'; /*npm install @mui/icons-material */
 import styles from './addFile.module.css';
 import Tooltip from '@mui/material/Tooltip';
@@ -24,7 +25,7 @@ export default function InputFileUpload() {
       component="label"
       variant="contained"
     >
-      <CloudUploadIcon />
+      <UploadTwoToneIcon />
       <VisuallyHiddenInput type="file" />
     </Button>
     </Tooltip>

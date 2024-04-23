@@ -10,7 +10,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import styles from './addFile.module.css';
+import styles from './showFile.module.css';
+import FilePresentTwoToneIcon from '@mui/icons-material/FilePresentTwoTone';
+import Tooltip from '@mui/material/Tooltip';
 
 
 export default function AnchorTemporaryDrawer() {
@@ -65,7 +67,13 @@ export default function AnchorTemporaryDrawer() {
     <div >
       {['right'].map((anchor) => (
         <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor} className={styles.Button}</Button>
+          <Tooltip title="Show file" placement="top">
+            <Button onClick={toggleDrawer(anchor, true)} 
+              variant="contained" 
+              className={styles.button}>
+                <FilePresentTwoToneIcon/>
+            </Button>
+          </Tooltip>
           <Drawer
             anchor={anchor}
             open={state[anchor]}
