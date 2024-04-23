@@ -11,43 +11,17 @@ import { MessagesPlaceholder } from "@langchain/core/prompts";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import { chatHistory } from "./utils";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf"; //npm install pdf-parse
-/*import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
 
-const rl = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-*/
-/** creazione oggetto ChatOllama, caratterizzata dall'url per raggiungere l'LLM e dal modello che si vuole utilizzare */
-
-
-
-
-
+/**
+ * Oggetto ChatOllama
+ */
 const chatModel = new ChatOllama({
   baseUrl: "http://localhost:11434", 
   model: "mistral",
 });
 
-
-
-
-/** caricamento documento di contesto */
-//il documento docs sarà troppo grande per darlo direttamente all'LLM
-
-
-
-const loader = new CheerioWebBaseLoader("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing");
-const docs = await loader.load();
-//in questo modo splitDocs è un array che contiene tante piccole parti di docs
-const splitter = new RecursiveCharacterTextSplitter();
-const splitDocs = await splitter.splitDocuments(docs);
-
-
-//console.log(splitDocs[0].pageContent.length);
 /**
- * creazione embedding e vector store
+ * Creazione embedding e Vector Store
  * https://thenewstack.io/the-building-blocks-of-llms-vectors-tokens-and-embeddings/#:~:text=Embeddings%20are%20high%2Ddimensional%20vectors,generation%2C%20sentiment%20analysis%20and%20more.
  */
 const embeddings = new OllamaEmbeddings({
@@ -55,15 +29,12 @@ const embeddings = new OllamaEmbeddings({
   maxConcurrency: 5,
 });
 const vectorstore = new MemoryVectorStore(embeddings);
-
-await vectorstore.addDocuments(splitDocs);
-
 const retriever = vectorstore.asRetriever();
 
 /**
- * PARTE AGGIUNTIVA RISPETTO AL 4
+ * Prompt che permette di generare la query di ricerca nel 
+ * Vector Store
  */
-
 const historyAwarePrompt = ChatPromptTemplate.fromMessages([
   new MessagesPlaceholder("chat_history"),
   ["user", "{input}"],
@@ -73,13 +44,21 @@ const historyAwarePrompt = ChatPromptTemplate.fromMessages([
   ],
 ]);
 
+/**
+ * Chain che usando l'LLM e il prompt forniti effettua una ricerca
+ * nel Vector Store associato al retriever passato
+ */
 const historyAwareRetrieverChain = await createHistoryAwareRetriever({
   llm: chatModel,
   retriever: retriever,
   rephrasePrompt: historyAwarePrompt,
 });
 
-
+/**
+ * Prompt che istruisce l'LLM a generare una risposta basandosi
+ * sull'input dell'utente, sulla cronologia della conversazione e
+ * sul contesto prelevato dal Vector Store
+ */
 const historyAwareRetrievalPrompt = ChatPromptTemplate.fromMessages([
   [
     "system",
@@ -89,72 +68,28 @@ const historyAwareRetrievalPrompt = ChatPromptTemplate.fromMessages([
   ["user", "{input}"],
 ]);
 
-/** crea una chain che passa una lista di documenti ad un modello */
+/**
+ * Chain che combina il prompt "history and context aware "e il chat model
+ */
 const historyAwareCombineDocsChain = await createStuffDocumentsChain({
   llm: chatModel,
-  prompt: historyAwareRetrievalPrompt, //il prompt serve a passare al modello i documenti sotto forma di context
+  prompt: historyAwareRetrievalPrompt,
 });
 
+/**
+ * Chain che combina la parte conversazionaleù
+ * alla parte di recupero del contesto
+ */
 const conversationalRetrievalChain = await createRetrievalChain({
   retriever: historyAwareRetrieverChain,
   combineDocsChain: historyAwareCombineDocsChain,
 });
-const loader1= new CheerioWebBaseLoader("https://docs.google.com/document/d/1HshNITZ2_n08rHoiWQnIpwijYFyQxuaL0PfmgFwU8Is/edit?usp=sharing");
-const docs1 = await loader1.load();
-//in questo modo splitDocs è un array che contiene tante piccole parti di docs
-const splitter1 = new RecursiveCharacterTextSplitter();
-const splitDocs1 = await splitter1.splitDocuments(docs1);
 
-/*
-let result = await conversationalRetrievalChain.invoke({
-  chat_history: chatHistory,
-  input: "Where does he live?",
-});
-
-console.log("Secondo risultato:" + result.answer);
-*/
-console.log("hei");
-/*
-function mainLoop() {
-    rl.question("Write: ", (userMessage) => {
-        if(userMessage === "/stop") {
-            rl.close();
-        }
-        else {
-            chatHistory.push(new HumanMessage(userMessage));
-            conversationalRetrievalChain.invoke({
-                chat_history: chatHistory,
-                input: userMessage,
-              }).then((response) => {
-                chatHistory.push(new AIMessage(response.answer));
-                console.log("Response", response.answer);
-                mainLoop();
-              });
-        }
-    });
-}
-*/
-
-/*
-export function callLLMPersonalized(inputMessage) {
-  conversationalRetrievalChain.invoke({
-      chat_history: chatHistory,
-      input: inputMessage,
-  }).then((response) => {
-      chatHistory.push(new AIMessage(response.answer));
-      return response.answer;
-  });
-}*/
-/*
-export function addFileSourceFromWeb(url) {
-  const loader1= new CheerioWebBaseLoader(url);
-  const docs1 = await loader1.load();
-  //in questo modo splitDocs è un array che contiene tante piccole parti di docs
-  const splitter1 = new RecursiveCharacterTextSplitter();
-  const splitDocs1 = await splitter1.splitDocuments(docs1);
-  await vectorstore.addDocuments(splitDocs1);
-}
-*/
+/**
+ * Funzione che permette di aggiungere un documento
+ * dal web al Vector Store
+ * @param {String} url 
+ */
 function addFileSourceFromWeb(url) {
   const loader = new CheerioWebBaseLoader(url);
   loader.load()
@@ -173,6 +108,11 @@ function addFileSourceFromWeb(url) {
     });
 }
 
+/**
+ * Funzione che permette di aggiungere un PDF
+ * al Vector Store
+ * @param {String} path 
+ */
 function addPDFSource(path) {
   const loader = new PDFLoader(path);
   loader.load()
@@ -182,21 +122,30 @@ function addPDFSource(path) {
         .then((splitDocs) => {
           vectorstore.addDocuments(splitDocs)
             .then(() => {
-              // Success
+              console.log("Success");
             })
+            .catch((e) => {
+              console.log("add documents failed");
+            });
         })
+        .catch((e) => {
+          console.log("Split documents failed");
+        });
+    })
+    .catch((e) => {
+      console.log("file not found");
     });
 }
-//await vectorstore.addDocuments(splitDocs1).then();
 
 /**
- * 
+ * Funzione che permette di invocare la chain
+ * su un input fornito dall'utente
  * @param {String} inputMessage 
- * @returns 
+ * @returns la risposta dell'LLM
  */
-export function callLLMPersonalized(inputMessage) {
-  //addFileSourceFromWeb("https://docs.google.com/document/d/1HshNITZ2_n08rHoiWQnIpwijYFyQxuaL0PfmgFwU8Is/edit?usp=sharing");
-  addPDFSource("./docs/Documento1.pdf");
+export function callOllamaRAGChatBot(inputMessage) {
+  //addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing");
+  //addPDFSource("./docs/Documento1.pdf");
   return new Promise((resolve, reject) => {
     conversationalRetrievalChain.invoke({
       chat_history: chatHistory,
