@@ -11,23 +11,22 @@ import { MessagesPlaceholder } from "@langchain/core/prompts";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 //import { chatHistory } from "./utils";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf"; //npm install pdf-parse
-const chatHistory = [];
-/**
- * Oggetto ChatOllama
- */
-const chatModel = new ChatOllama({
-  baseUrl: "http://localhost:11434", 
-  model: "mistral",
+import { GoogleVertexAIEmbeddings } from "@langchain/community/embeddings/googlevertexai";
+
+import { ChatVertexAI } from "@langchain/google-vertexai";
+const chatHistory =  [];
+const chatModel = new ChatVertexAI({
+  temperature: 1,
+  model: 'gemini-pro'
 });
+
+//console.log(await model.invoke("What is the capital of France?"));
 
 /**
  * Creazione embedding e Vector Store
  * https://thenewstack.io/the-building-blocks-of-llms-vectors-tokens-and-embeddings/#:~:text=Embeddings%20are%20high%2Ddimensional%20vectors,generation%2C%20sentiment%20analysis%20and%20more.
  */
-const embeddings = new OllamaEmbeddings({
-  model: "nomic-embed-text",
-  maxConcurrency: 5,
-});
+const embeddings = new GoogleVertexAIEmbeddings();
 const vectorstore = new MemoryVectorStore(embeddings);
 const retriever = vectorstore.asRetriever();
 
@@ -37,9 +36,9 @@ const retriever = vectorstore.asRetriever();
  */
 const historyAwarePrompt = ChatPromptTemplate.fromMessages([
   new MessagesPlaceholder("chat_history"),
-  ["user", "{input}"],
   [
     "user",
+    "{input}",
     "Given the above conversation, generate a search query to look up in order to get information relevant to the conversation",
   ],
 ]);
@@ -84,6 +83,11 @@ const conversationalRetrievalChain = await createRetrievalChain({
   retriever: historyAwareRetrieverChain,
   combineDocsChain: historyAwareCombineDocsChain,
 });
+/*
+conversationalRetrievalChain.invoke({
+    chat_history: chatHistory,
+    input: "Buongiorno",
+}).then(console.log);*/
 
 /**
  * Funzione che permette di aggiungere un documento
@@ -91,21 +95,26 @@ const conversationalRetrievalChain = await createRetrievalChain({
  * @param {String} url 
  */
 function addFileSourceFromWeb(url) {
-  const loader = new CheerioWebBaseLoader(url);
-  loader.load()
-    .then((docs) => {
-      const splitter = new RecursiveCharacterTextSplitter();
-      splitter.splitDocuments(docs)
-        .then((splitDocs) => {
-          vectorstore.addDocuments(splitDocs)
-            .then(() => {
-              // Success
-            })
-        })
-    })
-    .catch((e) => {
-      console.log("file not found");
-    });
+  return new Promise((resolve, reject) => {
+    const loader = new CheerioWebBaseLoader(url);
+    loader.load()
+      .then((docs) => {
+        const splitter = new RecursiveCharacterTextSplitter();
+        splitter.splitDocuments(docs)
+          .then((splitDocs) => {
+            vectorstore.addDocuments(splitDocs)
+              .then(() => {
+                // Success
+                console.log("CCOCOCO");
+                resolve();
+              })
+          })
+      })
+      .catch((e) => {
+        console.log("file not found");
+        reject();
+      });
+  });
 }
 
 /**
@@ -136,17 +145,21 @@ function addPDFSource(path) {
       console.log("file not found");
     });
 }
-
+addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing")
+  .then(
+    console.log(await callOllamaRAGChatBot("Who is Luna?"))
+  );
 /**
  * Funzione che permette di invocare la chain
  * su un input fornito dall'utente
  * @param {String} inputMessage 
  * @returns la risposta dell'LLM
  */
-export function callOllamaRAGChatBot(inputMessage) {
-  addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing");
+function callOllamaRAGChatBot(inputMessage) {
+  
   //addPDFSource("./docs/Documento1.pdf");
   return new Promise((resolve, reject) => {
+    
     conversationalRetrievalChain.invoke({
       chat_history: chatHistory,
       input: inputMessage,
@@ -158,5 +171,3 @@ export function callOllamaRAGChatBot(inputMessage) {
     });
   });
 }
-
-callOllamaRAGChatBot("Who is Luna?").then(console.log);

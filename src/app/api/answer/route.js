@@ -1,4 +1,4 @@
-import { callOllamaRAGChatBot } from "@/lib/llmFunctions";
+import { callOllamaRAGChatBot } from "@/lib/llmVertexFunctions";
 
 export async function POST(request) {
     const requestElaborated = await request.json();
