@@ -11,12 +11,12 @@ import { MessagesPlaceholder } from "@langchain/core/prompts";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 //import { chatHistory } from "./utils";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf"; //npm install pdf-parse
-const chatHistory = [];
+const chatHistory = [new HumanMessage("Ciao"), new AIMessage("NO")];
 /**
  * Oggetto ChatOllama
  */
 const chatModel = new ChatOllama({
-  baseUrl: "http://localhost:11434", 
+  baseUrl: "http://localhost:11434",
   model: "mistral",
 });
 
@@ -77,7 +77,7 @@ const historyAwareCombineDocsChain = await createStuffDocumentsChain({
 });
 
 /**
- * Chain che combina la parte conversazionaleù
+ * Chain che combina la parte conversazionale
  * alla parte di recupero del contesto
  */
 const conversationalRetrievalChain = await createRetrievalChain({
@@ -91,21 +91,26 @@ const conversationalRetrievalChain = await createRetrievalChain({
  * @param {String} url 
  */
 function addFileSourceFromWeb(url) {
-  const loader = new CheerioWebBaseLoader(url);
-  loader.load()
-    .then((docs) => {
-      const splitter = new RecursiveCharacterTextSplitter();
-      splitter.splitDocuments(docs)
-        .then((splitDocs) => {
-          vectorstore.addDocuments(splitDocs)
-            .then(() => {
-              // Success
-            })
-        })
-    })
-    .catch((e) => {
-      console.log("file not found");
-    });
+  return new Promise((resolve, reject) => {
+    console.log("Ingresso funzione");
+    const loader = new CheerioWebBaseLoader(url);
+    loader.load()
+      .then((docs) => {
+        const splitter = new RecursiveCharacterTextSplitter();
+        splitter.splitDocuments(docs)
+          .then((splitDocs) => {
+            vectorstore.addDocuments(splitDocs)
+              .then(() => {
+                // Success
+                console.log("success");
+                resolve("Caricato con successo");
+              })
+          })
+      })
+      .catch((e) => {
+        console.log("file not found");
+      });
+  });
 }
 
 /**
@@ -144,9 +149,10 @@ function addPDFSource(path) {
  * @returns la risposta dell'LLM
  */
 export function callOllamaRAGChatBot(inputMessage) {
-  addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing");
+  //addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing");
   //addPDFSource("./docs/Documento1.pdf");
   return new Promise((resolve, reject) => {
+    console.log("Invocazione");
     conversationalRetrievalChain.invoke({
       chat_history: chatHistory,
       input: inputMessage,
@@ -159,4 +165,8 @@ export function callOllamaRAGChatBot(inputMessage) {
   });
 }
 
-callOllamaRAGChatBot("Who is Luna?").then(console.log);
+addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing")
+  .then((res) => {
+    return callOllamaRAGChatBot("Who is Luna?")
+  })
+  .then(console.log);

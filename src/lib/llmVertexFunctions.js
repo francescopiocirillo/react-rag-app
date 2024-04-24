@@ -14,7 +14,7 @@ import { PDFLoader } from "langchain/document_loaders/fs/pdf"; //npm install pdf
 import { GoogleVertexAIEmbeddings } from "@langchain/community/embeddings/googlevertexai";
 
 import { ChatVertexAI } from "@langchain/google-vertexai";
-const chatHistory =  [];
+const chatHistory =  [new HumanMessage("I am a Doctor"), new AIMessage("I will help you to the best of my abilities!")];
 const chatModel = new ChatVertexAI({
   temperature: 1,
   model: 'gemini-pro'
@@ -96,6 +96,7 @@ conversationalRetrievalChain.invoke({
  */
 function addFileSourceFromWeb(url) {
   return new Promise((resolve, reject) => {
+    console.log("Ingresso funzione");
     const loader = new CheerioWebBaseLoader(url);
     loader.load()
       .then((docs) => {
@@ -105,14 +106,13 @@ function addFileSourceFromWeb(url) {
             vectorstore.addDocuments(splitDocs)
               .then(() => {
                 // Success
-                console.log("CCOCOCO");
-                resolve();
+                console.log("success");
+                resolve("Caricato con successo");
               })
           })
       })
       .catch((e) => {
         console.log("file not found");
-        reject();
       });
   });
 }
@@ -146,9 +146,10 @@ function addPDFSource(path) {
     });
 }
 addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing")
-  .then(
-    console.log(await callOllamaRAGChatBot("Who is Luna?"))
-  );
+  .then(() => {
+    return callOllamaRAGChatBot("Who is Luna?");
+  })
+  .then(console.log);
 /**
  * Funzione che permette di invocare la chain
  * su un input fornito dall'utente
@@ -156,10 +157,10 @@ addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kx
  * @returns la risposta dell'LLM
  */
 function callOllamaRAGChatBot(inputMessage) {
-  
+
   //addPDFSource("./docs/Documento1.pdf");
   return new Promise((resolve, reject) => {
-    
+    console.log("invocazione");
     conversationalRetrievalChain.invoke({
       chat_history: chatHistory,
       input: inputMessage,
