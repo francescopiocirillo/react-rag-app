@@ -9,9 +9,9 @@ import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { createHistoryAwareRetriever } from "langchain/chains/history_aware_retriever";
 import { MessagesPlaceholder } from "@langchain/core/prompts";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
-//import { chatHistory } from "./utils";
+import { chatHistory } from "./utils";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf"; //npm install pdf-parse
-const chatHistory = [new HumanMessage("Ciao"), new AIMessage("NO")];
+//const chatHistory = [new HumanMessage("I am a Doctor"), new AIMessage("I will help you to the best of my abilities!")];
 /**
  * Oggetto ChatOllama
  */
@@ -62,7 +62,7 @@ const historyAwareRetrieverChain = await createHistoryAwareRetriever({
 const historyAwareRetrievalPrompt = ChatPromptTemplate.fromMessages([
   [
     "system",
-    "Answer the user's questions based on the below context:\n\n{context}",
+    "Answer the user's questions based on the context and the previous messages, try to be brief:\n\n{context}",
   ],
   new MessagesPlaceholder("chat_history"),
   ["user", "{input}"],
@@ -90,7 +90,7 @@ const conversationalRetrievalChain = await createRetrievalChain({
  * dal web al Vector Store
  * @param {String} url 
  */
-function addFileSourceFromWeb(url) {
+export function addFileSourceFromWeb(url) {
   return new Promise((resolve, reject) => {
     console.log("Ingresso funzione");
     const loader = new CheerioWebBaseLoader(url);
@@ -141,7 +141,7 @@ function addPDFSource(path) {
       console.log("file not found");
     });
 }
-
+await addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing");
 /**
  * Funzione che permette di invocare la chain
  * su un input fornito dall'utente
@@ -165,8 +165,9 @@ export function callOllamaRAGChatBot(inputMessage) {
   });
 }
 
-addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing")
+/*addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing")
   .then((res) => {
     return callOllamaRAGChatBot("Who is Luna?")
   })
   .then(console.log);
+*/

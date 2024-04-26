@@ -94,7 +94,7 @@ conversationalRetrievalChain.invoke({
  * dal web al Vector Store
  * @param {String} url 
  */
-function addFileSourceFromWeb(url) {
+export function addFileSourceFromWeb(url) {
   return new Promise((resolve, reject) => {
     console.log("Ingresso funzione");
     const loader = new CheerioWebBaseLoader(url);
@@ -145,22 +145,20 @@ function addPDFSource(path) {
       console.log("file not found");
     });
 }
-addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing")
-  .then(() => {
+await addFileSourceFromWeb("https://docs.google.com/document/d/1OJhuvIg7KXAaWvKFY3M_kxxEybILAmWD8CtCsEB3HYI/edit?usp=sharing")
+/*  .then(() => {
     return callOllamaRAGChatBot("Who is Luna?");
   })
-  .then(console.log);
+  .then(console.log);*/
 /**
  * Funzione che permette di invocare la chain
  * su un input fornito dall'utente
  * @param {String} inputMessage 
  * @returns la risposta dell'LLM
  */
-function callOllamaRAGChatBot(inputMessage) {
-
+export function callOllamaRAGChatBot(inputMessage) {
   //addPDFSource("./docs/Documento1.pdf");
   return new Promise((resolve, reject) => {
-    console.log("invocazione");
     conversationalRetrievalChain.invoke({
       chat_history: chatHistory,
       input: inputMessage,
